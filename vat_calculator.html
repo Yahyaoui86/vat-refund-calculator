@@ -74,9 +74,7 @@
 </head>
 <body>
   <div class="container">
-    <!-- Planet Logo -->
     <img src="logo.svg" alt="Planet Logo" class="logo">
-
     <h2>UAE VAT Refund Calculator</h2>
 
     <label for="mode">Select Calculation Mode:</label>
@@ -88,82 +86,51 @@
     <label id="inputLabel" for="amount">Sales Amount (AED):</label>
     <input type="number" id="amount" placeholder="Enter amount" />
 
-    <button onclick="calculate()">Calculate</button>
+    <button id="calculateBtn">Calculate</button>
 
     <div id="result"></div>
   </div>
 
   <script>
-    function calculate() {
-      const mode = document.getElementById("mode").value;
-      const input = parseFloat(document.getElementById("amount").value);
+    document.addEventListener("DOMContentLoaded", function () {
+      const modeSelect = document.getElementById("mode");
+      const amountInput = document.getElementById("amount");
       const resultDisplay = document.getElementById("result");
+      const button = document.getElementById("calculateBtn");
 
-      if (isNaN(input) || input < 0) {
-        resultDisplay.textContent = "Please enter a valid positive number.";
-        return;
+      function calculate() {
+        const mode = modeSelect.value;
+        const input = parseFloat(amountInput.value);
+
+        if (isNaN(input) || input < 0) {
+          resultDisplay.textContent = "Please enter a valid positive number.";
+          return;
+        }
+
+        let result;
+
+        if (mode === "net") {
+          const base = input / 1.05;
+          const vat = input - base;
+          const refund = vat * 0.87;
+          result = refund - 4.8;
+          resultDisplay.textContent = Net Refund: ${result.toFixed(2)} AED;
+        } else {
+          const refund = input + 4.8;
+          const vat = refund / 0.87;
+          const base = vat / 0.05;
+          const total = base * 1.05;
+          resultDisplay.textContent = Sales Amount: ${total.toFixed(2)} AED;
+        }
       }
 
-      let result;
-      if (mode === "net") {
-        const base = input / 1.05;
-        const vat = input - base;
-        const refund = vat * 0.87;
-        result = refund - 4.8;
-        resultDisplay.textContent = Net Refund: ${result.toFixed(2)} AED;
-      } else {
-        const refund = input + 4.8;
-        const vat = refund / 0.87;
-        const base = vat / 0.05;
-        const total = base * 1.05;
-        resultDisplay.textContent = Sales Amount: ${total.toFixed(2)} AED;
-      }
-    }
+      button.addEventListener("click", calculate);
 
-    document.getElementById("mode").addEventListener("change", function () {
-      const label = document.getElementById("inputLabel");
-      label.textContent = this.value === "net" ? "Sales Amount (AED):" : "Net Refund (AED):";
+      modeSelect.addEventListener("change", function () {
+        const label = document.getElementById("inputLabel");
+        label.textContent = this.value === "net" ? "Sales Amount (AED):" : "Net Refund (AED):";
+      });
     });
   </script>
-  <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const modeSelect = document.getElementById("mode");
-    const amountInput = document.getElementById("amount");
-    const resultDisplay = document.getElementById("result");
-
-    function calculate() {
-      const mode = modeSelect.value;
-      const input = parseFloat(amountInput.value);
-
-      if (isNaN(input) || input < 0) {
-        resultDisplay.textContent = "Please enter a valid positive number.";
-        return;
-      }
-
-      let result;
-
-      if (mode === "net") {
-        const base = input / 1.05;
-        const vat = input - base;
-        const refund = vat * 0.87;
-        result = refund - 4.8;
-        resultDisplay.textContent = Net Refund: ${result.toFixed(2)} AED;
-      } else {
-        const refund = input + 4.8;
-        const vat = refund / 0.87;
-        const base = vat / 0.05;
-        const total = base * 1.05;
-        resultDisplay.textContent = Sales Amount: ${total.toFixed(2)} AED;
-      }
-    }
-
-    document.querySelector("button").addEventListener("click", calculate);
-
-    modeSelect.addEventListener("change", function () {
-      const label = document.getElementById("inputLabel");
-      label.textContent = this.value === "net" ? "Sales Amount (AED):" : "Net Refund (AED):";
-    });
-  });
-</script>
 </body>
 </html>

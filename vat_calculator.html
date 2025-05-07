@@ -58,7 +58,8 @@
       } else {
         const refund = input + 4.8;
         const vat = refund / 0.87;
-        const salesAmount = vat / 0.05;
+        const base = vat / 0.05;
+        const salesAmount = base * 1.05;
         resultDisplay.textContent = `Sales Amount: ${salesAmount.toFixed(2)} AED`;
       }
     }

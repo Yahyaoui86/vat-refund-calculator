@@ -50,7 +50,8 @@
 
       let result;
       if (mode === "net") {
-        const vat = input * 0.05;
+        const base= input  / 1.05;
+        const vat = input - base;
         const refund = vat * 0.87;
         result = refund - 4.8;
         resultDisplay.textContent = `Net Refund: ${result.toFixed(2)} AED`;
